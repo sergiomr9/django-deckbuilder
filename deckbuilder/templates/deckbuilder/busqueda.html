@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <!-- PINTAR LAS CARTAS -->
+    <div class="row">
+        {% if results %}
+        {% for carta in results %}
+        <div class="col-sm-2">
+            <img src="{{ carta.image_url}}" alt="" width="275" height="400" class="btn" data-bs-toggle="modal"
+                data-bs-target="#modal{{ carta.cardnumber }}">
+        </div>
+        <!-- MODAL -->
+        <div class="modal fade" id="modal{{ carta.cardnumber }}" tabindex="-1" role="dialog"
+            aria-labelledby="modalLabel{{ carta.cardnumber }}" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalLabel{{ carta.cardnumber }}">{{ carta.name }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body d-flex">
+                        <img src="{{ carta.image_url }}" alt="" class="img-fluid">
+                        <div class="ml-3 d-flex flex-column">
+                            <p>{{carta.name}}</p>
+                            <p>{{carta.type}}</p>
+                            <p>{{carta.color}}</p>
+                            <p>{{carta.stage}}</p>
+                            <div class="mt-auto">
+                                <p>{{carta.maineffect}}</p>
+                                <p>{{carta.sourceffect}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if forloop.counter|divisibleby:6 %}
+    </div>
+    <div class="row">
+        {% endif %}
+        {% endfor %}
+    </div>
+    </div>
+    {% else %}
+    {% for carta in cartas %}
+    <div class="col-sm-2">
+        <img src="{{ carta.image_url}}" alt="" width="275" height="400" class="btn" data-bs-toggle="modal"
+            data-bs-target="#modal{{ carta.cardnumber }}">
+    </div>
+    <div class="modal fade" id="modal{{ carta.cardnumber }}" tabindex="-1" role="dialog"
+        aria-labelledby="modalLabel{{ carta.cardnumber }}" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel{{ carta.cardnumber }}">{{ carta.name }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body d-flex">
+                    <img src="{{ carta.image_url }}" alt="" class="img-fluid">
+                    <div class="ml-3 d-flex flex-column">
+                        <p>{{carta.name}}</p>
+                        <p>{{carta.type}}</p>
+                        <p>{{carta.color}}</p>
+                        <p>{{carta.stage}}</p>
+                        <div class="mt-auto">
+                            <p>{{carta.maineffect}}</p>
+                            <p>{{carta.sourceffect}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if forloop.counter|divisibleby:6 %}
+    </div>
+    <div class="row">
+        {% endif %}
+        {% endfor %}
+    </div>
+    </div>
+    {% endif %}
+    <br>
+
+    <!-- PAGINACION-->
+    <div class="pagination">
+        <span class="step-links">
+            {% if cartas.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ cartas.previous_page_number }}"> previous</a>
+            {% endif %}
+        </span>
+
+        <span class="current-page">
+            {{ cartas.number}}
+        </span>
+        {% if cartas.has_next %}
+        <a href="?page={{ cartas.next_page_number }}">next</a>
+        <a href="?page={{ cartas.paginator.num_pages}}">last &raquo;</a>
+        {% endif %}
+    </div>
+
+
+</body>
+
+</html>
