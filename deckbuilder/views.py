@@ -8,6 +8,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from deckbuilder.models import Card,Deck,DeckCard,Usuario,Token
 from django.views.generic import ListView
 from django.http import JsonResponse
+from django.shortcuts import render, get_object_or_404
 
 
 def index(request):
@@ -49,9 +50,40 @@ def decks(request):
     return render(request,'deckbuilder/decks.html',{
         'decks':decks,
     })
-def decklist(request,):
 
-    deckcards = DeckCard.objects.filter(deck__name=Deck.name)
+
+def decklist(request,pk):
+    deck = Deck.objects.get(pk = pk)
+    from django.db.models import F
+
+    deckcards = deck.deckcard_set.all().order_by(F('card__level').asc(nulls_last=True))
+
     return render(request, 'deckbuilder/decklist.html', {
-        'carta': deckcards
+        'deckcards': deckcards,
+        'deck':deck
+    })
+
+def detalle(request,cardnumber):
+    carta = Card.objects.get(cardnumber = cardnumber)
+    context = {
+        'name': carta.name,
+        'type': carta.type,
+        'color': carta.color,
+        'stage':carta.stage,
+        'digi_type':carta.digi_type,
+        'attribute': carta.attribute,
+        'level': carta.level,
+        'play_cost':carta.play_cost,
+        'evolution_cost':carta.evolution_cost,
+        'cardrarity':carta.cardrarity,
+        'artist': carta.artist,
+        'dp':carta.dp,
+        'cardnumber': carta.cardnumber,
+        'maineffect':carta.maineffect,
+        'sourceeffect':carta.sourceeffect,
+        'card_set':carta.card_sets,
+        'image_url':carta.image_url,
+    }
+    return render(request, 'deckbuilder/detalle.html', {
+        'context': context
     })
