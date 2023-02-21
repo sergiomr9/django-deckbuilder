@@ -1,0 +1,60 @@
+
+
+{% block content %}
+<h1>Create a New Deck</h1>
+
+<form method="POST">
+  {% csrf_token %}
+  
+  <br><br>
+
+  <table>
+    <tr>
+      <th>Card</th>
+      <th>Add/Remove</th>
+    </tr>
+    {% for card in cards %}
+    <tr>
+      <td><img src="{{ card.image_url }}" alt="{{ card.name }}" width="150" height="208"></td>
+      <td>
+        <button type="button" class="add-card" data-card-id="{{ card.cardnumber }}">+</button>
+        <span class="card-count" data-card-id="{{ card.cardnumber }}">0</span>
+        <button type="button" class="remove-card" data-card-id="{{ card.cardnumber }}">-</button>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <br><br>
+  <input type="submit" value="Create Deck">
+</form>
+
+<script>
+  const addButtons = document.querySelectorAll('.add-card');
+  const removeButtons = document.querySelectorAll('.remove-card');
+  const countSpans = document.querySelectorAll('.card-count');
+
+  addButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const cardId = button.dataset.cardId;
+      const countSpan = document.querySelector(`.card-count[data-card-id="${cardId}"]`);
+      let count = parseInt(countSpan.innerText);
+      count++;
+      countSpan.innerText = count;
+    });
+  });
+
+  removeButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const cardId = button.dataset.cardId;
+      const countSpan = document.querySelector(`.card-count[data-card-id="${cardId}"]`);
+      let count = parseInt(countSpan.innerText);
+      if (count > 0) {
+        count--;
+        countSpan.innerText = count;
+      }
+    });
+  });
+</script>
+
+{% endblock %}

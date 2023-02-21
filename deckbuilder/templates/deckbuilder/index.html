@@ -14,12 +14,26 @@
             float: left;
             margin-right: 1em;
         }
+        body{
+            margin: 0 auto;
+            background-color: rgb(53, 53, 53);
+        }
+        .cuerpo{
+            padding: 2vw;
+        }
+        .cartas{
+            background-color:rgb(42, 42, 42);
+            margin-top: 1vw;
+        }
+        form{
+            background-color:rgb(42, 42, 42);
+        }
     </style>
 
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary"  data-bs-theme="dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Navbar</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -39,25 +53,23 @@
                         <a class="nav-link active" href="{% url 'decklists' %}">Decks</a>
                     </li>
                 </ul>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
+               
             </div>
         </div>
     </nav>
-    <!-- FORMULARIO DE FILTRADO DE CARTAS Y BÚSQUEDA -->
+    <div class="cuerpo">
+        <!-- FORMULARIO DE FILTRADO DE CARTAS Y BÚSQUEDA -->
     <div class="form-group d-flex justify-content-between align-items-center">
-        <form action="">
+        <form action="" class="text-bg-dark" style="padding:0.5vw">
             <div class="d-flex align-items-center">
-                <label class="mr-2" for="a">Expansiones:</label>
-                <select class="form-control mr-2" name="a" id="a">
+                <label class="mr-2" for="a">Expansiones:&nbsp;&nbsp;</label>
+                <select class="form-control mr-2 text-bg-dark" name="a" id="a">
                     {% for set in expansiones %}
-                    <option value="{{ set }}">{{ set }}</option>
+                    <option value="{{ set }}" >{{ set }}</option>
                     {% endfor %}
-                </select>
-                <label class="mr-2" for="campos">Ordenar:</label>
-                <select class="form-control mr-2" name="campos" id="campos">
+                </select>&nbsp;&nbsp;
+                <label class="mr-2" for="campos">Ordenar:&nbsp;&nbsp;</label>
+                <select class="form-control mr-2 text-bg-dark" name="campos" id="campos">
                     {% for field in datos %}
                     {% if forloop.first %}
                     <option value="{{ field}}" selected>{{ field}}</option>
@@ -65,60 +77,59 @@
                     <option value="{{ field}}">{{ field}}</option>
                     {% endif %}
                     {% endfor %}
-                </select>
-                <input type="submit" value="filtrar">
+                </select>&nbsp;&nbsp;
+                <input type="submit" value="filtrar" class="btn btn-outline-light">
             </div>
         </form>
         <!-- FORMULARIO DE LA BUSQUEDA LIVE -->
-        <form class="form-inline" role="search">
+        <form class="form" role="search">
             <input class="form-control mx-2" type="search" placeholder="Search" aria-label="Search" id="search">
         </form>
     </div>
 
 
-    <div class="row">
-        <!-- PINTAR LAS CARTAS -->
-
-        {% for carta in cartas %}
-        <div class="col-sm-2">
-            <img src="{{ carta.image_url}}" alt="" width="285" height="400" class="btn" data-bs-toggle="modal"
-                data-bs-target="#modal{{ carta.cardnumber }}">
-        </div>
-
-        <!-- MODAL -->
-        <div class="modal fade" id="modal{{ carta.cardnumber }}" tabindex="-1" role="dialog"
-            aria-labelledby="modalLabel{{ carta.cardnumber }}" aria-hidden="true">
+    <div class="cartas">
+        <div class="row" style="padding:1vw;">
+          <!-- PINTAR LAS CARTAS -->
+          {% for carta in cartas %}
+          <div class="col-sm-2">
+            <img src="{{ carta.image_url}}" alt="" width="285" height="400" class="btn" data-bs-toggle="modal" data-bs-target="#modal{{ carta.cardnumber }}">
+          </div>
+          <!-- MODAL -->
+          <div class="modal fade" id="modal{{ carta.cardnumber }}" tabindex="-1" role="dialog" aria-labelledby="modalLabel{{ carta.cardnumber }}" aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalLabel{{ carta.cardnumber }}">{{ carta.name }}</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body d-flex">
-                        <img src="{{ carta.image_url }}" alt="" class="img-fluid">
-                        <div class="ml-3 d-flex flex-column">
-                            <p>{{carta.name}}</p>
-                            <p>{{carta.type}}</p>
-                            <p>{{carta.color}}</p>
-                            <p>{{carta.stage}}</p>
-                            <div class="mt-auto">
-                                <p>{{carta.maineffect}}</p>
-                                <p>{{carta.sourceffect}}</p>
-                            </div>
-                        </div>
-                    </div>
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalLabel{{ carta.cardnumber }}">{{ carta.name }}</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
                 </div>
+                <div class="modal-body d-lg-table-cell">
+                  <img src="{{ carta.image_url }}" alt="" class="img" style="max-width: 50%;">
+                  <div class="ml-4 d-flex flex-column flex-grow-2">
+                    <p>{{carta.name}}</p>
+                    <p>{{carta.type}}</p>
+                    <p>{{carta.color}}</p>
+                    <p>{{carta.stage}}</p>
+                    
+                  </div>
+                  <div class="mt-auto">
+                    <p>{{carta.maineffect}}</p>
+                    <p>{{carta.sourceeffect}}</p>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
+          {% if forloop.counter|divisibleby:6 %}
         </div>
-
-        {% if forloop.counter|divisibleby:6 %}
-    </div>
-    <div class="row">
-        {% endif %}
-        {% endfor %}
-    </div>
+        <div class="row">
+          {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      
 
     <br>
     <!-- PAGINACIÓN -->
@@ -126,22 +137,23 @@
         <span class="step-links">
             {% if cartas.has_previous %}
             <a href="?page=1" class="btn btn-outline-primary">&laquo; first</a>
-            <a href="?page={{ cartas.previous_page_number }}" class="btn btn-outline-primary">previous</a>
+            <a href="?page={{ cartas.previous_page_number }}" class="btn btn-outline-light">previous</a>
             {% endif %}
         </span>
 
-        <span class="current-page btn btn-outline-primary">
+        <span class="current-page btn btn-outline-light">
             {{ cartas.number}}
         </span>
 
         <span class="step-links">
             {% if cartas.has_next %}
-            <a href="?page={{ cartas.next_page_number }}" class="btn btn-outline-primary">next</a>
-            <a href="?page={{ cartas.paginator.num_pages}}" class="btn btn-outline-primary">last &raquo;</a>
+            <a href="?page={{ cartas.next_page_number }}" class="btn btn-outline-light">next</a>
+            <a href="?page={{ cartas.paginator.num_pages}}" class="btn btn-outline-light">last &raquo;</a>
             {% endif %}
         </span>
     </div>
 
+    </div>
 
 
 

@@ -2,83 +2,95 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-        <style>
-            .card-img-top {
-  transition: transform 0.2s;
-}
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+  <style>
+    .card-img-top {
+      transition: transform 0.2s;
+    }
+    
+    body{
+      margin: 0 auto;
+      background-color: rgb(53, 53, 53);
+    }
 
-.card-img-top:hover {
-  transform: scale(1.9);
-  z-index: 1;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  position: relative;
-  
-}
-        </style>
+    .cuerpo {
+      padding: 2vw;
+    }
+
+    .cartas {
+      background-color: rgb(42, 42, 42);
+      margin-top: 1vw;
+    }
+
+    form {
+      background-color: rgb(42, 42, 42);
+    }
+  </style>
 </head>
 
 <body>
 
-    <!-- NAVBAR -->
-    <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Deckbuilder</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="{% url 'index' %}">Decks</a>
-                    </li>
-                </ul>
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-            </div>
-        </div>
-    </nav>
-    <h1>{{deck.name}}</h1>
+  <!-- NAVBAR -->
+  <!-- NAVBAR -->
+  <nav class="navbar bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Navbar</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Deckbuilder</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'decklists' %}">Decks</a>
+          </li>
+        </ul>
+        
+      </div>
+    </div>
+  </nav>
+  
 
-    <div class="container">
-        <div class="row row-cols-6 gx-2 gy-2">
-          {% for carta in deckcards %}
-          <div class="col">
-            <div class="card">
-              <img src="{{ carta.card.image_url }}" class="card-img-top" alt="{{ carta.card.name }}">
-              <div class="card-body text-end">
-                <a class="card-title"></a>
-                <a href="{% url 'detalle' carta.card.cardnumber %}" class="card-tittle">{{ carta.card.name }}</a>
-                <h6 class="card-subtitle mb-2 text-muted mt-3">{{ carta.count }}</h6>
-              </div>
-            </div>
+  <div class="container">
+    <h3 class="text-light p3 border-5">{{deck.name}}</h3>
+    <div class="row row-cols-6 gx-2 gy-2">
+      {% for carta in deckcards %}
+      <div class="col">
+        <div class="card position-relative">
+          <a href="{% url 'detalle' carta.card.cardnumber %}">
+            <img src="{{ carta.card.image_url }}" class="card-img-top" alt="{{ carta.card.name }}">
+          </a>
+          <div class="position-absolute bottom-0 end-0">
+            <span class="badge bg-secondary badge-lg">{{ carta.count }}</span>
           </div>
-          {% endfor %}
         </div>
       </div>
-      
+      {% endfor %}
+    </div>
+  </div>
+  
+  
+  
+  
+  
 
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
-        crossorigin="anonymous"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
 </body>
 
 </html>
